@@ -6,10 +6,10 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
-use Pqf\Smscode\Interfaces\SmsSend;
+use Pqf\Smscode\Interfaces\Send;
 use Pqf\Smscode\SendReturn;
 
-class YunpianGuard implements SmsSend
+class YunpianGuard implements Send
 {
     public function sendSms($phones, $content): SendReturn
     {

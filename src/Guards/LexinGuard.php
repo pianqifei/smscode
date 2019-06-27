@@ -3,10 +3,10 @@
 namespace Pqf\Smscode\Guards;
 
 use GuzzleHttp\Client;
-use Pqf\Smscode\Interfaces\SmsSend;
+use Pqf\Smscode\Interfaces\Send;
 use Pqf\Smscode\SendReturn;
 
-class LexinGuard implements SmsSend
+class LexinGuard implements Send
 {
     public function sendSms($phones, $content): SendReturn
     {
