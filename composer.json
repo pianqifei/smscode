@@ -1,0 +1,30 @@
+{
+    "name": "pianqifei/smscode",
+    "description": "A tool used send smscode support 'tengxin' 'lexin' 'yunpian'",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "pianqifei",
+            "email": "1726441799@qq.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.5",
+        "guzzlehttp/guzzle" : "~6.0",
+        "nesbot/carbon" : "~2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Pqf\\Smscode\\": "src"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": ["Pqf\\Smscode\\SmsServiceProvider"]
+        },
+        "aliases": {
+            "Smscode": "Pqf\\Smscode\\Facades\\SmsCode"
+        }
+    }
+}
