@@ -17,9 +17,10 @@ class CreateSmsCodeTable extends Migration
             $table->increments('id');
             $table->string('phone', 60);
             $table->string('code', 10);
+            $table->tinyInteger('type')->nullable()->default(1);
             $table->tinyInteger('status')->default(0);
-            $table->string('ip', 32);
-            $table->string('result', 128);
+            $table->string('ip', 32)->nullable()->default(null);
+            $table->string('result', 128)->nullable()->default(null);
             $table->timestamps();
         });
     }

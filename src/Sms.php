@@ -26,7 +26,7 @@ class Sms
         throw new Exception("sms guard must implements SmsSend interface", 1);
     }
 
-    protected function checkSmsCode($phone, $code,$type=1)
+    public function checkSmsCode($phone, $code,$type=1)
     {
         $expire=config('sms.timeout')*60;
         $sms_code = SmsCode::where('phone', $phone)
@@ -43,7 +43,7 @@ class Sms
         return true;
     }
     //发送验证码并保存数据库
-    protected function sendCodeAndSave($phone,$type=1)
+    public function sendCodeAndSave($phone,$type=1)
     {
         /*if (!preg_match('~^1[0-9]{10}$~', $phone)) {
             return [
@@ -55,18 +55,18 @@ class Sms
         if ($dayCount > config('sms.ip_day_limit')) {
             return [
                 'success' => false,
-                'message' => trans('sms.sms_limit'),
+                'message' => trans('sms::sms.sms_limit'),
             ];
         }
         $phoneCount = SmsCode::where('phone', $phone)->where('created_at', '>', Carbon::now()->subHours(1))->where('type',$type)->count();
         if ($phoneCount > config('sms.phone_hour_limit')) {
             return [
                 'success' => false,
-                'message' => trans('sms.sms_limit'),
+                'message' => trans('sms::sms.sms_limit'),
             ];
         }
         $code = mt_rand(1000, 9999);
-        $content = trans('sms.sms_temp',['code'=>$code,'minutes'=>config('sms.timeout')]);
+        $content = trans('sms::sms.sms_temp',['code'=>$code,'minutes'=>config('sms.timeout')]);
         $sms_code = new SmsCode;
         $sms_code->ip = request()->ip();
         $sms_code->phone = $phone;
@@ -79,13 +79,13 @@ class Sms
         if ($res->success == SendReturn::SUCCESS_CODE) {
             return [
                 'success' => true,
-                'message' => trans('sms.success'),
+                'message' => trans('sms::sms.send_success'),
             ];
         }
 
         return [
             'success' => false,
-            'message' =>trans('sms.failed'),
+            'message' =>trans('sms::sms.failed'),
             //'message' =>$res->result,
         ];
     }

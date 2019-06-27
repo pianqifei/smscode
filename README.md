@@ -16,3 +16,4 @@ php artisan migrate 迁移数据表
 user Pqf\Smscode\Facades\SmsCode 门面方法
 # 
 Pqf\Smscode\Sms 具体发送逻辑
+

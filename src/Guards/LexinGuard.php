@@ -3,6 +3,8 @@
 namespace Pqf\Smscode\Guards;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
+use Illuminate\Support\Facades\Log;
 use Pqf\Smscode\Interfaces\Send;
 use Pqf\Smscode\SendReturn;
 
@@ -29,19 +31,26 @@ class LexinGuard implements Send
         // $url = "http: //sdk.lx198.com/sdk/send?accName=$username&accPwd=$password&aimcodes=$phones&content=$content&bizId=$bizId&dataType=json";
 
         $client = new Client();
-        $response = $client->post('http://sdk.lx198.com/sdk/send', [
-            'timeout' => config('sms.timeout'),
-            'form_params' => [
-                'accName' => $username,
-                'accPwd' => $password,
-                'aimcodes' => $phones,
-                'content' => $content,
-                'bizId' => $bizId,
-                'dataType' => 'json',
-            ],
-        ]);
-        $ret = json_decode($response->getBody()->getContents(), true);
-        return new SendReturn($ret['replyCode'] == 1 ? SendReturn::SUCCESS_CODE : SendReturn::FAIL_CODE, $ret['replyMsg']);
+
+        try{
+            $response = $client->post('http://sdk.lx198.com/sdk/send', [
+                'timeout' => config('sms.timeout'),
+                'http_errors'=>false,
+                'form_params' => [
+                    'accName' => $username,
+                    'accPwd' => $password,
+                    'aimcodes' => $phones,
+                    'content' => $content,
+                    'bizId' => $bizId,
+                    'dataType' => 'json',
+                ],
+            ]);
+            $ret = json_decode($response->getBody()->getContents(), true);
+            return new SendReturn($ret['replyCode'] == 1 ? SendReturn::SUCCESS_CODE : SendReturn::FAIL_CODE, $ret['replyMsg']);
+        }catch (RequestException $e){
+            Log::info('send_sms_err',['code'=>$e->getCode(),'msg'=>$e->getMessage()]);
+            return new SendReturn(SendReturn::FAIL_CODE ,trans('sms::sms.send_failed'));
+        }
 
     }
 }
