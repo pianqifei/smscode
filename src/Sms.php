@@ -35,7 +35,7 @@ class Sms
             ->where('type',$type)
             ->orderBy('id', 'desc')->first();
         if (!$sms_code || time() - $sms_code->created_at->timestamp > $expire) {
-            return ['message' =>trans('sms.sms_err')];
+            return ['message' =>trans('smscode::sms.sms_err')];
         }
         $sms_code->status = SmsCode::STATUS_USED;
         $sms_code->save();
@@ -85,7 +85,7 @@ class Sms
 
         return [
             'success' => false,
-            'message' =>trans('smscode::sms.failed'),
+            'message' =>trans('smscode::sms.send_failed'),
             //'message' =>$res->result,
         ];
     }
