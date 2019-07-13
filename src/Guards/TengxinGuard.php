@@ -41,7 +41,7 @@ class TengxinGuard implements Send
             return new SendReturn($result['result'] == 0 ? SendReturn::SUCCESS_CODE : SendReturn::FAIL_CODE, $result['description']);
         }catch (RequestException $e){
             Log::info('send_sms_err',['code'=>$e->getCode(),'msg'=>$e->getMessage()]);
-            return new SendReturn(SendReturn::FAIL_CODE ,trans('sms::sms.send_failed'));
+            return new SendReturn(SendReturn::FAIL_CODE ,trans('smscode::sms.send_failed'));
         }
     }
 }

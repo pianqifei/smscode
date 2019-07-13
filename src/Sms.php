@@ -55,18 +55,18 @@ class Sms
         if ($dayCount > config('sms.ip_day_limit')) {
             return [
                 'success' => false,
-                'message' => trans('sms::sms.sms_limit'),
+                'message' => trans('smscode::sms.sms_limit'),
             ];
         }
         $phoneCount = SmsCode::where('phone', $phone)->where('created_at', '>', Carbon::now()->subHours(1))->where('type',$type)->count();
         if ($phoneCount > config('sms.phone_hour_limit')) {
             return [
                 'success' => false,
-                'message' => trans('sms::sms.sms_limit'),
+                'message' => trans('smscode::sms.sms_limit'),
             ];
         }
         $code = mt_rand(1000, 9999);
-        $content = trans('sms::sms.sms_temp',['code'=>$code,'minutes'=>config('sms.timeout')]);
+        $content = trans('smscode::sms.sms_temp',['code'=>$code,'minutes'=>config('sms.timeout')]);
         $sms_code = new SmsCode;
         $sms_code->ip = request()->ip();
         $sms_code->phone = $phone;
@@ -79,13 +79,13 @@ class Sms
         if ($res->success == SendReturn::SUCCESS_CODE) {
             return [
                 'success' => true,
-                'message' => trans('sms::sms.send_success'),
+                'message' => trans('smscode::sms.send_success'),
             ];
         }
 
         return [
             'success' => false,
-            'message' =>trans('sms::sms.failed'),
+            'message' =>trans('smscode::sms.failed'),
             //'message' =>$res->result,
         ];
     }

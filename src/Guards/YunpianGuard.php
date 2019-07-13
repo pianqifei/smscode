@@ -43,11 +43,11 @@ class YunpianGuard implements Send
                 return new SendReturn($ret['code'] == 0 ? SendReturn::SUCCESS_CODE : SendReturn::FAIL_CODE, trans('message.send_success'));
             }else{
                 Log::info('send_sms_err',['code'=>$ret['code'],'msg'=>$ret['detail']]);
-                return new SendReturn(SendReturn::FAIL_CODE ,trans('sms::sms.send_failed'));
+                return new SendReturn(SendReturn::FAIL_CODE ,trans('smscode::sms.send_failed'));
             }
         }catch (RequestException $e){
             Log::info('send_sms_err',['code'=>$e->getCode(),'msg'=>$e->getMessage()]);
-            return new SendReturn(SendReturn::FAIL_CODE ,trans('sms::sms.send_failed'));
+            return new SendReturn(SendReturn::FAIL_CODE ,trans('smscode::sms.send_failed'));
         }
     }
 }
