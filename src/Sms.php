@@ -59,8 +59,8 @@ class Sms
                 'message' => trans('smscode::sms.sms_limit'),
             ];
         }
-        $code = mt_rand(1000, 9999);
         if(!$content){
+            $code = mt_rand(1000, 9999);
             $content = trans('smscode::sms.sms_temp',['code'=>$code,'minutes'=>config('sms.timeout')]);
         }
         $sms_code = new SmsCode;
