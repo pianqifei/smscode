@@ -4,7 +4,9 @@ namespace Pqf\Smscode\Guards;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 use Pqf\Smscode\Interfaces\Send;
 use Pqf\Smscode\SendReturn;
 
@@ -14,15 +16,15 @@ class LexinGuard implements Send
     {
         $config = config('sms.guards.lexin');
 
-        $username = array_get($config, 'user', '');
-        $password = array_get($config, 'password', '');
+        $username = Arr::get($config, 'user', '');
+        $password = Arr::get($config, 'password', '');
         $password = strtoupper(md5($password));
-        $sign = array_get($config, 'sign', '');
+        $sign = Arr::get($config, 'sign', '');
 
-        $sign = str_start($sign, '【');
-        $sign = str_finish($sign, '】');
+        $sign = Str::start($sign, '【');
+        $sign = Str::finish($sign, '】');
 
-        if (!str_contains($content, $sign)) {
+        if (!Str::contains($content, $sign)) {
             $content .= $sign;
         }
 

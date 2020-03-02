@@ -4,6 +4,7 @@ namespace Pqf\Smscode\Guards;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Pqf\Smscode\Interfaces\Send;
@@ -14,9 +15,9 @@ class YunpianGuard implements Send
     public function sendSms($phones, $content): SendReturn
     {
         $config = config('sms.guards.yunpian');
-        $sign = trans('message.'.array_get($config, 'sign', 'light'));
-        $sign = str_start($sign, '【');
-        $sign = str_finish($sign, '】');
+        $sign = trans('message.'.Arr::get($config, 'sign', ''));
+        $sign = Arr::get($sign, '【');
+        $sign = Arr::get($sign, '】');
         if (!Str::contains($content, $sign)) {
             $content=Str::start($content,$sign);
         }
@@ -33,7 +34,7 @@ class YunpianGuard implements Send
                 'timeout' => config('sms.timeout'),
                 'http_errors'=>false,
                 'form_params' => [
-                    'apikey' => array_get($config, 'key', ''),
+                    'apikey' => Arr::get($config, 'key', ''),
                     'mobile' => $phones,
                     'text' => $content,
                 ],

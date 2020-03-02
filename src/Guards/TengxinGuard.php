@@ -4,6 +4,8 @@ namespace Pqf\Smscode\Guards;
 
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use Pqf\Smscode\Interfaces\Send;
 use Pqf\Smscode\SendReturn;
 use GuzzleHttp\Client;
@@ -14,14 +16,14 @@ class TengxinGuard implements Send
     {
         $config = config('sms.guards.tengxin');
 
-        $username = urlencode(array_get($config, 'user', ''));
-        $password = urlencode(array_get($config, 'password', ''));
-        $sign = array_get($config, 'sign', '');
+        $username = urlencode(Arr::get($config, 'user', ''));
+        $password = urlencode(Arr::get($config, 'password', ''));
+        $sign = Arr::get($config, 'sign', '');
 
-        $sign = str_start($sign, '【');
-        $sign = str_finish($sign, '】');
+        $sign = Str::start($sign, '【');
+        $sign = Str::finish($sign, '】');
 
-        if (!str_contains($content, $sign)) {
+        if (!Str::contains($content, $sign)) {
             $content .= $sign;
         }
         $content = mb_convert_encoding($content, 'UTF-8', 'UTF-8');
