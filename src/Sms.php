@@ -43,14 +43,8 @@ class Sms
         return true;
     }
     //发送验证码并保存数据库
-    public function sendCodeAndSave($phone,$type=1)
+    public function sendCodeAndSave($phone,$content='',$type=1)
     {
-        /*if (!preg_match('~^1[0-9]{10}$~', $phone)) {
-            return [
-                'success' => false,
-                'message' => '请输入正确的手机号码',
-            ];
-        }*/
         $dayCount = SmsCode::where('phone', $phone)->whereDate('created_at', Carbon::now()->toDateString())->where('ip', request()->ip())->where('type',$type)->count();
         if ($dayCount > config('sms.ip_day_limit')) {
             return [
@@ -66,7 +60,9 @@ class Sms
             ];
         }
         $code = mt_rand(1000, 9999);
-        $content = trans('smscode::sms.sms_temp',['code'=>$code,'minutes'=>config('sms.timeout')]);
+        if(!$content){
+            $content = trans('smscode::sms.sms_temp',['code'=>$code,'minutes'=>config('sms.timeout')]);
+        }
         $sms_code = new SmsCode;
         $sms_code->ip = request()->ip();
         $sms_code->phone = $phone;
