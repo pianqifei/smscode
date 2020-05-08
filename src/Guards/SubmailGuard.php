@@ -10,43 +10,45 @@ use Illuminate\Support\Str;
 use Pqf\Smscode\Interfaces\Send;
 use Pqf\Smscode\SendReturn;
 
-class YunpianGuard implements Send
+class SubmailGuard implements Send
 {
     public function sendSms($phones, $content): SendReturn
     {
-        $config = config('sms.guards.yunpian');
+        $config = config('sms.guards.submail');
         $sign = trans('message.'.Arr::get($config, 'sign', ''));
-        $sign = Arr::start($sign, '【');
-        $sign = Arr::finish($sign, '】');
+        $sign = Arr::get($sign, '【');
+        $sign = Arr::get($sign, '】');
+        $sign = Str::start($sign, '【');
+        $sign = Str::finish($sign, '】');
         if (!Str::contains($content, $sign)) {
-            $content=Str::start($content,$sign);
+            $content=Str::start($content, $sign);
         }
         $content = mb_convert_encoding($content, 'UTF-8', 'UTF-8');
         if(Str::startsWith($phones,'+86')===true){
             $phones=substr($phones,3);
-            $host_url='https://sms.yunpian.com';
+            $host_url='https://api.mysubmail.com/message/send.json';
         }else{
-            $host_url='https://us.yunpian.com';
+            $host_url='https://api.mysubmail.com/internationalsms/send.json';
         }
+        $data['appid'] =$config['appid'];
+        $data['signature'] =$config['signature'];
+        $data['to'] = $phones;
+        $data['content'] = $content;
         $client = new Client();
         try{
-            $response = $client->post($host_url.'/v2/sms/single_send.json', [
+            $response = $client->post($host_url, [
                 'timeout' => config('sms.timeout'),
                 'http_errors'=>false,
-                'form_params' => [
-                    'apikey' => Arr::get($config, 'key', ''),
-                    'mobile' => $phones,
-                    'text' => $content,
-                ],
+                'json'=>$data,
             ]);
             $ret = json_decode($response->getBody()->getContents(), true);
-            if($ret['code']==0){
-                return new SendReturn($ret['code'] == 0 ? SendReturn::SUCCESS_CODE : SendReturn::FAIL_CODE, trans('message.send_success'));
+            if($ret['status']=='success'){
+                return new SendReturn($ret['status'] == 'success' ? SendReturn::SUCCESS_CODE : SendReturn::FAIL_CODE, trans('message.send_success'));
             }else{
-                Log::info('send_sms_err',['code'=>$ret['code'],'msg'=>$ret['detail']]);
+                Log::info('send_sms_err',['code'=>$ret['code'],'msg'=>$ret['msg']]);
                 return new SendReturn(SendReturn::FAIL_CODE ,trans('smscode::sms.send_failed'));
             }
-        }catch (RequestException $e){
+        }catch (\Exception $e){
             Log::info('send_sms_err',['code'=>$e->getCode(),'msg'=>$e->getMessage()]);
             return new SendReturn(SendReturn::FAIL_CODE ,trans('smscode::sms.send_failed'));
         }

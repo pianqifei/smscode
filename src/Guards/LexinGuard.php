@@ -15,25 +15,18 @@ class LexinGuard implements Send
     public function sendSms($phones, $content): SendReturn
     {
         $config = config('sms.guards.lexin');
-
         $username = Arr::get($config, 'user', '');
         $password = Arr::get($config, 'password', '');
         $password = strtoupper(md5($password));
         $sign = Arr::get($config, 'sign', '');
-
         $sign = Str::start($sign, '【');
         $sign = Str::finish($sign, '】');
-
         if (!Str::contains($content, $sign)) {
             $content .= $sign;
         }
-
         $content = mb_convert_encoding($content, 'UTF-8', 'UTF-8');
         $bizId = date('YmdHis');
-        // $url = "http: //sdk.lx198.com/sdk/send?accName=$username&accPwd=$password&aimcodes=$phones&content=$content&bizId=$bizId&dataType=json";
-
         $client = new Client();
-
         try{
             $response = $client->post('http://sdk.lx198.com/sdk/send', [
                 'timeout' => config('sms.timeout'),
