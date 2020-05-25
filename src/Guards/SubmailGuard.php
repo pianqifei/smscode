@@ -29,6 +29,8 @@ class SubmailGuard implements Send
             $host_url='https://api.mysubmail.com/message/send.json';
         }else{
             $host_url='https://api.mysubmail.com/internationalsms/send.json';
+            $data['appid']=$config['appid_international'];
+            $data['signature']=$config['signature_international'];
         }
         $data['appid'] =$config['appid'];
         $data['signature'] =$config['signature'];
