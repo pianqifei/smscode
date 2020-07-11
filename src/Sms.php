@@ -43,7 +43,7 @@ class Sms
         return true;
     }
     //发送验证码并保存数据库
-    public function sendCodeAndSave($phone,$content='',$type=1)
+    public function sendCodeAndSave($phone,$type=1)
     {
         $dayCount = SmsCode::where('phone', $phone)->whereDate('created_at', Carbon::now()->toDateString())->where('ip', request()->ip())->where('type',$type)->count();
         if ($dayCount > config('sms.ip_day_limit')) {
@@ -59,10 +59,8 @@ class Sms
                 'message' => trans('smscode::sms.sms_limit'),
             ];
         }
-        if(!$content){
-            $code = mt_rand(1000, 9999);
-            $content = trans('smscode::sms.sms_temp',['code'=>$code,'minutes'=>config('sms.timeout')]);
-        }
+        $code = mt_rand(1000, 9999);
+        $content = trans('smscode::sms.sms_temp',['code'=>$code,'minutes'=>config('sms.timeout')]);
         $sms_code = new SmsCode;
         $sms_code->ip = request()->ip();
         $sms_code->phone = $phone;

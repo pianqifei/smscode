@@ -16,8 +16,6 @@ class SubmailGuard implements Send
     {
         $config = config('sms.guards.submail');
         $sign = trans('message.'.Arr::get($config, 'sign', ''));
-        $sign = Arr::get($sign, '【');
-        $sign = Arr::get($sign, '】');
         $sign = Str::start($sign, '【');
         $sign = Str::finish($sign, '】');
         if (!Str::contains($content, $sign)) {

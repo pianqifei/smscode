@@ -16,8 +16,8 @@ class YunpianGuard implements Send
     {
         $config = config('sms.guards.yunpian');
         $sign = trans('message.'.Arr::get($config, 'sign', ''));
-        $sign = Arr::start($sign, '【');
-        $sign = Arr::finish($sign, '】');
+        $sign = Str::start($sign, '【');
+        $sign = Str::finish($sign, '】');
         if (!Str::contains($content, $sign)) {
             $content=Str::start($content,$sign);
         }
@@ -34,14 +34,14 @@ class YunpianGuard implements Send
                 'timeout' => config('sms.timeout'),
                 'http_errors'=>false,
                 'form_params' => [
-                    'apikey' => Arr::get($config, 'key', ''),
+                    'apikey' => Arr::get($config, 'access_key', ''),
                     'mobile' => $phones,
                     'text' => $content,
                 ],
             ]);
             $ret = json_decode($response->getBody()->getContents(), true);
             if($ret['code']==0){
-                return new SendReturn($ret['code'] == 0 ? SendReturn::SUCCESS_CODE : SendReturn::FAIL_CODE, trans('message.send_success'));
+                return new SendReturn($ret['code'] == 0 ? SendReturn::SUCCESS_CODE : SendReturn::FAIL_CODE, trans('smscode::sms.send_success'));
             }else{
                 Log::info('send_sms_err',['code'=>$ret['code'],'msg'=>$ret['detail']]);
                 return new SendReturn(SendReturn::FAIL_CODE ,trans('smscode::sms.send_failed'));

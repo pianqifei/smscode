@@ -18,7 +18,7 @@ class LexinGuard implements Send
         $username = Arr::get($config, 'user', '');
         $password = Arr::get($config, 'password', '');
         $password = strtoupper(md5($password));
-        $sign = Arr::get($config, 'sign', '');
+        $sign = trans('message.'.Arr::get($config, 'sign', ''));
         $sign = Str::start($sign, '【');
         $sign = Str::finish($sign, '】');
         if (!Str::contains($content, $sign)) {

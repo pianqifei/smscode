@@ -17,7 +17,7 @@ class TengxinGuard implements Send
         $config = config('sms.guards.tengxin');
         $username = urlencode(Arr::get($config, 'user', ''));
         $password = urlencode(Arr::get($config, 'password', ''));
-        $sign = Arr::get($config, 'sign', '');
+        $sign = trans('message.'.Arr::get($config, 'sign', ''));
         $sign = Str::start($sign, '【');
         $sign = Str::finish($sign, '】');
         if (!Str::contains($content, $sign)) {
