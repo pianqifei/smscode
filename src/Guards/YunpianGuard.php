@@ -15,7 +15,11 @@ class YunpianGuard implements Send
     public function sendSms($phones, $content): SendReturn
     {
         $config = config('sms.guards.yunpian');
-        $sign = trans('message.'.Arr::get($config, 'sign', ''));
+        if(Str::startsWith($phones,'+86')===true){
+            $sign = trans('smscode::sms.sms_sign',[],'zh-CN');
+        }else{
+            $sign = trans('smscode::sms.sms_sign',[],'en');
+        }
         $sign = Str::start($sign, '【');
         $sign = Str::finish($sign, '】');
         if (!Str::contains($content, $sign)) {

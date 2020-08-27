@@ -11,8 +11,8 @@ class SmsServiceProvider extends ServiceProvider
     {
         $this->publishes([__DIR__.'/../database/migrations' => database_path('migrations')]);
         $this->publishes([__DIR__.'/../config/sms.php' => config_path('sms.php')]);
+        $this->publishes([__DIR__.'/../resources/lang' => resource_path('lang/vendor/sms')]);
         $this->loadTranslationsFrom(resource_path('lang/vendor/sms'), 'smscode');
-        $this->publishes([__DIR__.'/../resources/lang' => resource_path('lang/vendor/sms')],'sms-lang');
     }
 
     public function register()

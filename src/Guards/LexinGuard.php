@@ -18,7 +18,11 @@ class LexinGuard implements Send
         $username = Arr::get($config, 'user', '');
         $password = Arr::get($config, 'password', '');
         $password = strtoupper(md5($password));
-        $sign = trans('message.'.Arr::get($config, 'sign', ''));
+        if(Str::startsWith($phones,'+86')===true){
+            $sign = trans('smscode::sms.sms_sign',[],'zh-CN');
+        }else{
+            $sign = trans('smscode::sms.sms_sign',[],'en');
+        }
         $sign = Str::start($sign, '【');
         $sign = Str::finish($sign, '】');
         if (!Str::contains($content, $sign)) {

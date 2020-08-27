@@ -9,7 +9,7 @@ $ composer require pianqifei/smscode
 ```
 # 
 php artisan vendor:publish --provider="Pqf\Smscode\SmsServiceProvider" 
-发布sms配置文件 数据库文件 翻译文件(短信模板和签名)
+发布sms配置文件 数据库文件 翻译文件(短信模板和短信签名)
 # 
 php artisan migrate 迁移数据表
 # 

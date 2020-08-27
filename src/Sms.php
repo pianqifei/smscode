@@ -8,6 +8,7 @@
 
 namespace Pqf\Smscode;
 
+use Illuminate\Support\Str;
 use Pqf\Smscode\Models\SmsCode;
 use Carbon\Carbon;
 use Exception;
@@ -60,7 +61,11 @@ class Sms
             ];
         }
         $code = mt_rand(1000, 9999);
-        $content = trans('smscode::sms.sms_temp',['code'=>$code,'minutes'=>config('sms.timeout')]);
+        if(Str::startsWith($phone,'+86')===true){
+            $content = trans('smscode::sms.sms_temp',['code'=>$code,'minutes'=>config('sms.timeout')],'zh-CN');
+        }else{
+            $content = trans('smscode::sms.sms_temp',['code'=>$code,'minutes'=>config('sms.timeout')],'en');
+        }
         $sms_code = new SmsCode;
         $sms_code->ip = request()->ip();
         $sms_code->phone = $phone;
