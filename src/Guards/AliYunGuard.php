@@ -46,7 +46,7 @@ class AliYunGuard implements Send
             if($ret['Code']=='OK'){
                 return new SendReturn($ret['Code'] == 'OK' ? SendReturn::SUCCESS_CODE : SendReturn::FAIL_CODE, trans('message.send_success'));
             }else{
-                Log::info('send_sms_err',['code'=>$ret['code'],'msg'=>$ret['Message']]);
+                Log::info('send_sms_err',['code'=>$ret['Code'],'msg'=>$ret['Message']]);
                 return new SendReturn(SendReturn::FAIL_CODE ,trans('smscode::sms.send_failed'));
             }
         }catch (\Exception $e){
