@@ -15,29 +15,29 @@ class AliYunGuard implements Send
 {
     public function sendSms($phones, $content,$type=1): SendReturn
     {
-        $config = config('sms.guards.aliyun');
-        $type_arr=$config['Temp_arr'];
-        $host_url='dysmsapi.aliyuncs.com';
-        $AccessKeySecret=$config['AccessKeySecret'];
-        $data['AccessKeyId'] =$config['AccessKeyId'];
-        $data['Action']='SendSms';
-        $data['Format']='json';
-        $data['SignName'] =$config['sign'];
-        $data['SignatureMethod'] ='HMAC-SHA1';
-        $data['SignatureNonce'] =Str::uuid()->toString();
-        $data['SignatureVersion'] ='1.0';
-        $data['Timestamp'] =Carbon::now()->subHours(8)->format('Y-m-d\TH:i:s\Z');
-        $data['Version'] ='2017-05-25';
-        $data['TemplateCode'] =$type_arr[$type];
-        $data['PhoneNumbers'] = $phones;
-        $data['TemplateParam']=$content;
-        ksort($data);
-        $query_str=http_build_query($data);
-        $un_sign_str='GET&%2F&'.urlencode($query_str);
-        $sign_str=urlencode(base64_encode(hash_hmac('sha1',$un_sign_str,$AccessKeySecret.'&',true)));
-        $url=$host_url.'/?Signature='.$sign_str.'&'.$query_str;
-        $client = new Client();
         try{
+            $config = config('sms.guards.aliyun');
+            $type_arr=$config['Temp_arr'];
+            $host_url='dysmsapi.aliyuncs.com';
+            $AccessKeySecret=$config['AccessKeySecret'];
+            $data['AccessKeyId'] =$config['AccessKeyId'];
+            $data['Action']='SendSms';
+            $data['Format']='json';
+            $data['SignName'] =$config['sign'];
+            $data['SignatureMethod'] ='HMAC-SHA1';
+            $data['SignatureNonce'] =Str::uuid()->toString();
+            $data['SignatureVersion'] ='1.0';
+            $data['Timestamp'] =Carbon::now()->subHours(8)->format('Y-m-d\TH:i:s\Z');
+            $data['Version'] ='2017-05-25';
+            $data['TemplateCode'] =$type_arr[$type];
+            $data['PhoneNumbers'] = $phones;
+            $data['TemplateParam']=$content;
+            ksort($data);
+            $query_str=http_build_query($data);
+            $un_sign_str='GET&%2F&'.urlencode($query_str);
+            $sign_str=urlencode(base64_encode(hash_hmac('sha1',$un_sign_str,$AccessKeySecret.'&',true)));
+            $url=$host_url.'/?Signature='.$sign_str.'&'.$query_str;
+            $client = new Client();
             $response = $client->get($url, [
                 'timeout' => config('sms.timeout'),
                 'http_errors'=>false,
@@ -50,7 +50,6 @@ class AliYunGuard implements Send
                 return new SendReturn(SendReturn::FAIL_CODE ,trans('smscode::sms.send_failed'));
             }
         }catch (\Exception $e){
-            dd($ret);
             Log::info('send_sms_err',['code'=>$e->getCode(),'msg'=>$e->getMessage()]);
             return new SendReturn(SendReturn::FAIL_CODE ,trans('smscode::sms.send_failed'));
         }
