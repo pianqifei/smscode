@@ -1,6 +1,6 @@
 ## 安装步骤
 <h1 align="center"> smscode support tengxin lexin yunpian submail </h1>
-<p align="center"> :pencil: A tool used send smscode support 'tengxin' 'lexin' 'yunpian' 'submail'.</p>
+<p align="center"> :pencil: A tool used send smscode support 'tengxin' 'lexin' 'yunpian' 'submail','aliyun'.</p>
 
 ## Installing
 

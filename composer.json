@@ -1,6 +1,6 @@
 {
     "name": "pianqifei/smscode",
-    "description": "A tool used send smscode support 'tengxin' 'lexin' 'yunpian'",
+    "description": "A tool used send smscode support 'tengxin' 'lexin' 'yunpian','aliyun'",
     "type": "library",
     "license": "MIT",
     "authors": [

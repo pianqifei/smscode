@@ -60,11 +60,15 @@ class Sms
                 'message' => trans('smscode::sms.sms_limit'),
             ];
         }
-        $code = mt_rand(1000, 9999);
-        if(Str::startsWith($phone,'+86')===true){
-            $content = trans('smscode::sms.sms_temp',['code'=>$code,'minutes'=>config('sms.timeout')],'zh-CN');
+        $code = mt_rand(100000, 999999);
+        if(config('sms.default')=='aliyun'){
+            $content=json_encode(['code'=>$code]);
         }else{
-            $content = trans('smscode::sms.sms_temp',['code'=>$code,'minutes'=>config('sms.timeout')],'en');
+            if(Str::startsWith($phone,'+86')===true){
+                $content = trans('smscode::sms.sms_temp',['code'=>$code,'minutes'=>config('sms.timeout')],'zh-CN');
+            }else{
+                $content = trans('smscode::sms.sms_temp',['code'=>$code,'minutes'=>config('sms.timeout')],'en');
+            }
         }
         $sms_code = new SmsCode;
         $sms_code->ip = request()->ip();
@@ -72,7 +76,7 @@ class Sms
         $sms_code->code = $code;
         $sms_code->type = $type;
         $sms_code->save();
-        $res = $this->sendSms($phone, $content);
+        $res = $this->sendSms($phone, $content,$type);
         $sms_code->result = $res->result;
         $sms_code->save();
         if ($res->success == SendReturn::SUCCESS_CODE) {
