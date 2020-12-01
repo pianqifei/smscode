@@ -11,7 +11,7 @@ use Pqf\Smscode\Interfaces\Send;
 use Pqf\Smscode\SendReturn;
 use Carbon\Carbon;
 
-class AliYunGuard implements Send
+class AliyunGuard implements Send
 {
     public function sendSms($phones, $content,$type=1): SendReturn
     {

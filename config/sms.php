@@ -3,7 +3,7 @@
 return [
     'sms_username' => env('SMS_USERNAME', ''),
     'sms_password' => env('SMS_PASSWORD', ''),
-    'default' => env('SMS', 'aliyun'),
+    'default' => env('SMS', ''),
     'ip_day_limit' => env('SMS_IP_DAY_LIMIT', 20), //每ip每天限制多少条短信
     'phone_hour_limit' => env('SMS_PHONE_HOUR_LIMIT', 10), //每个电话号码每小时限制条数
     'timeout' => env('SMS_TIMEOUT', 5),
