@@ -65,7 +65,7 @@ class Sms
             $content=json_encode(['code'=>$code]);
         }else{
             if(Str::startsWith($phone,'+86')===true){
-                $content = trans('smscode::sms.sms_temp',['code'=>$code,'minutes'=>config('sms.timeout')],'zh-CN');
+                $content = trans('smscode::sms.sms_temp',['code'=>$code,'minutes'=>config('sms.timeout')],'zh_CN');
             }else{
                 $content = trans('smscode::sms.sms_temp',['code'=>$code,'minutes'=>config('sms.timeout')],'en');
             }

@@ -17,6 +17,11 @@ class AliyunGuard implements Send
     {
         try{
             $config = config('sms.guards.aliyun');
+            if(Str::startsWith($phones,'+86')===true){
+                $data['SignName'] =$config['sign'];
+            }else{
+                $data['SignName'] =$config['sign_en'];
+            }
             $type_arr=$config['Temp_arr'];
             $host_url='dysmsapi.aliyuncs.com';
             $AccessKeySecret=$config['AccessKeySecret'];

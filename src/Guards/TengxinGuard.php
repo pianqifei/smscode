@@ -18,9 +18,9 @@ class TengxinGuard implements Send
         $username = urlencode(Arr::get($config, 'user', ''));
         $password = urlencode(Arr::get($config, 'password', ''));
         if(Str::startsWith($phones,'+86')===true){
-            $sign = trans('smscode::sms.sms_sign',[],'zh-CN');
+            $sign = $config['sign'];
         }else{
-            $sign = trans('smscode::sms.sms_sign',[],'en');
+            $sign = $config['sign_en'];
         }
         $sign = Str::start($sign, '【');
         $sign = Str::finish($sign, '】');

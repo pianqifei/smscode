@@ -12,16 +12,19 @@ return [
             'user' => env('SMS_USERNAME', ''),
             'password' => env('SMS_PASSWORD', ''),
             'sign' => env('SMS_SIGN', ''),
+            'sign_en' => env('SMS_SIGN_EN', ''),
         ],
         'lexin' => [
             'user' => env('SMS_USERNAME', ''),
             'password' => env('SMS_PASSWORD', ''),
             'sign' => env('SMS_SIGN', ''),
+            'sign_en' => env('SMS_SIGN_EN', ''),
         ],
         'yunpian' => [
             'user' => env('SMS_USERNAME', ''),
             'password' => env('SMS_PASSWORD', ''),
             'sign' => env('SMS_SIGN', ''),
+            'sign_en' => env('SMS_SIGN_EN', ''),
             'access_key' => env('SMS_KEY', ''),
         ],
         'submail' => [
@@ -30,12 +33,14 @@ return [
             'appid_international' => env('SMS_APPID_INTERNATIONAL', ''),
             'signature_international' => env('SMS_SIGNATURE_INTERNATIONAL', ''),
             'sign' => env('SMS_SIGN', ''),
+            'sign_en' => env('SMS_SIGN_EN', ''),
         ],
         'aliyun' => [
             'AccessKeyId' => env('SMS_KEY_ID', ''),
             'AccessKeySecret' => env('SMS_KEY_SECRET', ''),
             'TemplateCode' => env('SMS_TEMPLATE_CODE', ''),
             'sign' => env('SMS_SIGN', ''),
+            'sign_en' => env('SMS_SIGN_EN', ''),
             'Temp_arr'=>[
                 1=>'SMS_206000202',
                 2=>'SMS_206000201',
