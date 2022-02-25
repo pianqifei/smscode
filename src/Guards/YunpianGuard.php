@@ -20,8 +20,6 @@ class YunpianGuard implements Send
         }else{
             $sign = $config['sign_en'];
         }
-        $sign = Str::start($sign, '【');
-        $sign = Str::finish($sign, '】');
         if (!Str::contains($content, $sign)) {
             $content=Str::start($content,$sign);
         }
