@@ -32,14 +32,16 @@ class Sms
         $expire=config('sms.timeout')*60;
         $sms_code = SmsCode::where('phone', $phone)
             ->where('code', $code)
-            ->where('status', SmsCode::STATUS_UNUSED)
+            //->where('status', SmsCode::STATUS_UNUSED)
+            ->where('result',SendReturn::SUCCESS_CODE)
             ->where('type',$type)
             ->orderBy('id', 'desc')->first();
         if (!$sms_code || time() - $sms_code->created_at->timestamp > $expire) {
             return ['message' =>trans('smscode::sms.sms_err')];
         }
-        $sms_code->status = SmsCode::STATUS_USED;
-        $sms_code->save();
+        //有效时间内验证码可复用
+       /* $sms_code->status = SmsCode::STATUS_USED;
+        $sms_code->save();*/
 
         return true;
     }
@@ -77,7 +79,7 @@ class Sms
         $sms_code->type = $type;
         $sms_code->save();
         $res = $this->sendSms($phone, $content,$type);
-        $sms_code->result = $res->result;
+        $sms_code->result = $res->success;
         $sms_code->save();
         if ($res->success == SendReturn::SUCCESS_CODE) {
             return [
