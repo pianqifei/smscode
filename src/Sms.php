@@ -40,7 +40,7 @@ class Sms
             return ['message' =>trans('smscode::sms.sms_err')];
         }
         //有效时间内验证码可复用
-       /* $sms_code->status = SmsCode::STATUS_USED;
+        /* $sms_code->status = SmsCode::STATUS_USED;
         $sms_code->save();*/
 
         return true;
